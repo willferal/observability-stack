@@ -1,0 +1,32 @@
+groups:
+
+# Grupo de alertas: hosts
+- name: alert_rules
+  interval: 1s
+  rules:
+  - alert: Uptime
+    expr: up == 0
+    for: 15s
+    labels:
+      severity: critical
+    annotations:
+      summary: "O servidor {{ $labels.alias }} está offline!"
+      description: "O servidor {{ $labels.alias }} parou de responder."
+
+  - alert: Uso de CPU
+    expr: 100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[2m])) by(instance) * 100) > 80
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Consumo alto de CPU (instance {{ $labels.instance }})
+      description: "O servidor {{ $labels.alias }} está com o consumo de CPU acima de 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: container_not_running
+    expr: time () - prometheus_ready == 0 > 10
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: Container "{{ $labels.name }}" is not running
+      description: 'container "{{ $labels.name }}" has been down for more than {{ $value | printf "%.0f" }} seconds'

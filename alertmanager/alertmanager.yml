@@ -1,0 +1,14 @@
+route:
+  receiver: 'discord_webhook'
+  repeat_interval: 10s
+  group_by: [ alertname ]
+  group_wait: 1s
+  group_interval: 1s
+
+receivers:
+  - name: 'discord_webhook'
+    webhook_configs:
+      - url: 'http://10.50.65.190:9094'
+  
+        
+#https://discordapp.com/api/webhooks/1171520305617973328/gX2L1I2Dwpm6zn0tbG2NuDbQephJnizdrzDJWVCYKwNuw06sPc_gZWV7Y9cwmDEsS0MJ

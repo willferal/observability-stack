@@ -1,0 +1,54 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert.rules.yml"
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+      - targets: ['192.168.1.43:9093']
+      - targets: ['10.50.65.190:9093']
+
+scrape_configs:
+- job_name: marcao-server
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+    - targets: ['191.252.200.24:9100']
+
+- job_name: will-note
+  static_configs:
+    - targets: ['192.168.1.43:9100']
+    - targets: ['10.50.65.190:9100']
+
+- job_name: prometheus
+  static_configs:
+    - targets: ['192.168.1.43:9090']
+    - targets: ['10.50.65.190:9090']
+
+- job_name: cadvisor
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+    - targets: ['192.168.1.43:8080']
+    - targets: ['10.50.65.190:8080']
+
+- job_name: docker
+  honor_timestamps: true
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  metrics_path: /metrics
+  scheme: http
+  static_configs:
+    - targets: ['192.168.1.43:9323']
+    - targets: ['10.50.65.190:9323']
